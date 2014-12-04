@@ -1,0 +1,35 @@
+#clooud-config
+
+hostname: atcpoc1.dsw.net
+
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAv3iKpqrLL9DcKyQN4ZHCI2BDBrIY16GXKXZbPWGk9OGplhoFML6JrW8p14D1tusbZcaOJboWLsSJA9FOQWxFxVXNq+6PiTMPYroJKV6MZJKdf8aC8gi68NTmPQJnFVu1Y1XDYv+pLAFHnsxxWfa0DcyWnMb6Mo8fUgnKLuxJbe/Avxb2gllFgfJyYx1FBp952UJkb4mAo1h8SMEzl7LIAMlDlaOn6ZlWXQZ6zGCPuZ+h7jFLJD5GpM9OF3bN/NJYNh0zlnaARR8FJJ/VwDoxlu7ow5PXswHq8Ig4RYIPJjYq2fKXBHB/JY6v68K7N9sK2c4PXVKV56fIYRCR1n4JIw==
+
+coreos:
+  etcd:
+    addr: $private_ipv4:4001
+    peer-addr: $private_ipv4:7001
+  units:
+    - name: etcd.service
+      command: start
+    - name: fleet.service
+      command: start
+    - name: static.network
+      content: |
+        [Match]
+        Name=: eno1
+
+        [Network]
+        Address=255.255.252.0
+        Gateway=10.0.12.1
+        DNS=10.0.4.108
+        DNS=10.0.4.57
+users:
+  - name: devops
+    passwd: deQcvEr1PRPSM
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAv3iKpqrLL9DcKyQN4ZHCI2BDBrIY16GXKXZbPWGk9OGplhoFML6JrW8p14D1tusbZcaOJboWLsSJA9FOQWxFxVXNq+6PiTMPYroJKV6MZJKdf8aC8gi68NTmPQJnFVu1Y1XDYv+pLAFHnsxxWfa0DcyWnMb6Mo8fUgnKLuxJbe/Avxb2gllFgfJyYx1FBp952UJkb4mAo1h8SMEzl7LIAMlDlaOn6ZlWXQZ6zGCPuZ+h7jFLJD5GpM9OF3bN/NJYNh0zlnaARR8FJJ/VwDoxlu7ow5PXswHq8Ig4RYIPJjYq2fKXBHB/JY6v68K7N9sK2c4PXVKV56fIYRCR1n4JIw==
+
+  - groups:
+      - sudo
+      - docker
